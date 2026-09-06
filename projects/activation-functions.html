@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Swish Activation Functions — Muhammad Ilyas Rusdi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+.res-table{width:100%;border-collapse:collapse;margin:28px 0 8px;font-family:'JetBrains Mono',monospace;font-size:12.5px}
+.res-table th{text-align:left;color:var(--mute);font-weight:500;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;padding:0 14px 12px 0;border-bottom:1px solid var(--rule)}
+.res-table td{padding:11px 14px 11px 0;border-bottom:1px solid var(--rule);color:var(--ink-soft)}
+.res-table tbody tr:hover td{color:#fff}
+.res-table td:first-child{color:var(--ink)}
+.res-table tr.best td{color:#fff}
+.res-table tr.best td:first-child::after{content:" ★";color:var(--mute);font-size:10px}
+.res-note{color:var(--mute);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.eq{display:block;margin:20px 0;padding:18px 22px;border:1px solid var(--rule);border-radius:10px;background:rgba(255,255,255,0.02);font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--ink);overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="chrome-bg" aria-hidden="true">
+<div class="blob a"></div>
+<div class="blob b"></div>
+<div class="blob c"></div>
+</div>
+
+<nav class="nav scrolled" style="justify-content:flex-start;">
+<a href="../Portfolio.html#projects" class="back-pill">
+<svg width="14" height="10" viewBox="0 0 22 10" fill="none"><path d="M21 5H2m0 0l4-4M2 5l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span>All projects</span>
+</a>
+</nav>
+
+<main class="proj-page">
+<header class="proj-hero">
+<div class="crumb mono"><span>04 / 04</span><span style="opacity:.4">·</span><span>Research · Deep Learning</span></div>
+<h1>Analysis of<span class="it"> activation</span> functions.</h1>
+<p class="lede">Evaluating Swish variants on CIFAR-10 classification with ResNet-50 — and proposing L-Swish, a bias-augmented parametric variant designed for faster convergence.</p>
+<dl class="proj-meta">
+<div><dt>Role</dt><dd>Co-author</dd></div>
+<div><dt>Date</dt><dd>February 2025</dd></div>
+<div><dt>With</dt><dd>Daniel Adhitthana</dd></div>
+<div><dt>Stack</dt><dd>PyTorch · ResNet-50 · CIFAR-10</dd></div>
+</dl>
+</header>
+
+<div class="proj-cover lit"><img src="../assets/act/p08-14.png" alt="Top-1 accuracy across all activation variants over 25 epochs" /><span>cover — top-1 accuracy across variants</span></div>
+
+<div class="proj-grid">
+<aside class="proj-side">
+<ol>
+<li>Context</li>
+<li>Variants studied</li>
+<li>L-Swish</li>
+<li>Setup</li>
+<li>Results</li>
+<li>Conclusion</li>
+</ol>
+</aside>
+
+<article class="proj-body">
+<section>
+<h2>Context</h2>
+<p>Activation functions introduce the non-linearity that lets neural networks learn complex patterns. Swish-based activations were proposed as alternatives to ReLU, aiming to address dying neurons and vanishing gradients by keeping small negative values alive instead of clamping them to zero. This paper asks a narrow, testable question: among the Swish family, which variant actually earns its place on a real image-classification task?</p>
+</section>
+
+<section>
+<h2>Variants studied</h2>
+<p>Each variant was substituted into the same architecture so differences in performance could be attributed to the activation rather than the network.</p>
+<ul>
+<li><strong>SiLU / Swish</strong> — smooth, non-monotonic self-gating baseline, <em>x · σ(x)</em>.</li>
+<li><strong>Swishβ</strong> — adds a learnable β inside the sigmoid to tune gradient flow.</li>
+<li><strong>E-Swish</strong> — scales the output by β (tested at 1.25, 1.5, 1.75, 2) for faster early learning while keeping gradients stable.</li>
+<li><strong>P-Swish</strong> — a piecewise parametric form with learnable α, β, δ, tested in four configurations (None, ab, a, ad).</li>
+</ul>
+<figure class="figure lit"><img src="../assets/act/p02-1.png" alt="SiLU training and testing loss over 25 epochs" loading="lazy" /></figure>
+</section>
+
+<section>
+<h2>L-Swish — our proposal</h2>
+<p>We proposed a parametric variant that adds a bias term inside the sigmoid gate. The hypothesis: bias lets the activation shift its gating threshold, allowing the model to move toward a minimum faster and generalize sooner.</p>
+<code class="eq">L-Swish(x) = a · x · σ(bx + c)</code>
+<p>The parameters <em>a</em>, <em>b</em>, and <em>c</em> are all learnable, initialized to 1, 1, and 0 respectively — so the function starts as standard Swish and departs from it only as training demands.</p>
+<figure class="figure lit"><img src="../assets/act/p06-11.png" alt="Effect of the bias parameter c on the activation curve" loading="lazy" /></figure>
+<figure class="figure lit"><img src="../assets/act/p06-12.png" alt="L-Swish training and testing loss over 25 epochs" loading="lazy" /></figure>
+</section>
+
+<section>
+<h2>Setup</h2>
+<ul>
+<li><strong>Dataset:</strong> CIFAR-10 — 60,000 32×32 color images across 10 classes, split 50,000 train / 10,000 test.</li>
+<li><strong>Preprocessing:</strong> normalization plus horizontal-flip augmentation to aid generalization.</li>
+<li><strong>Architecture:</strong> ResNet-50 with its ReLU activations swapped for each variant under test.</li>
+<li><strong>Training:</strong> 25 epochs, Adam at lr = 0.001, cross-entropy loss, repeated across multiple runs.</li>
+<li><strong>Metrics:</strong> Top-1 and Top-5 accuracy, precision, recall, F1.</li>
+</ul>
+<figure class="figure lit"><img src="../assets/act/p07-13.png" alt="Random sample of CIFAR-10 training images" loading="lazy" /></figure>
+</section>
+
+<section>
+<h2>Results</h2>
+<p>P-Swish (a) took the top spot on nearly every metric, with L-Swish placing a close second across the board — and converging faster early in training, which is what the bias term was meant to buy.</p>
+<table class="res-table">
+<thead><tr><th>Activation</th><th>Top-1</th><th>Top-5</th><th>Prec.</th><th>Recall</th><th>F1</th></tr></thead>
+<tbody>
+<tr><td>Swish</td><td>77.28</td><td>97.96</td><td>77.85</td><td>77.28</td><td>77.41</td></tr>
+<tr><td>Swishβ</td><td>67.12</td><td>96.49</td><td>67.29</td><td>67.12</td><td>67.00</td></tr>
+<tr><td>E-Swish (β=1.25)</td><td>78.94</td><td>98.34</td><td>79.41</td><td>78.94</td><td>79.07</td></tr>
+<tr><td>E-Swish (β=1.5)</td><td>79.12</td><td>98.32</td><td>78.99</td><td>79.12</td><td>79.01</td></tr>
+<tr><td>E-Swish (β=1.75)</td><td>76.34</td><td>98.24</td><td>76.39</td><td>76.34</td><td>76.25</td></tr>
+<tr><td>E-Swish (β=2)</td><td>79.09</td><td>98.60</td><td>79.20</td><td>79.09</td><td>79.10</td></tr>
+<tr><td>P-Swish (None)</td><td>79.37</td><td>98.40</td><td>79.12</td><td>79.37</td><td>79.11</td></tr>
+<tr><td>P-Swish (ab)</td><td>80.16</td><td>98.59</td><td>80.29</td><td>80.16</td><td>80.17</td></tr>
+<tr class="best"><td>P-Swish (a)</td><td>80.66</td><td>98.46</td><td>80.89</td><td>80.66</td><td>80.71</td></tr>
+<tr><td>P-Swish (ad)</td><td>79.82</td><td>98.47</td><td>80.36</td><td>79.82</td><td>79.95</td></tr>
+<tr><td>L-Swish (ours)</td><td>80.35</td><td>98.56</td><td>80.54</td><td>80.35</td><td>80.34</td></tr>
+</tbody>
+</table>
+<p class="res-note">★ best result · all figures in percent</p>
+<figure class="figure lit"><img src="../assets/act/p08-15.png" alt="Top-5 accuracy across all activation variants" loading="lazy" /></figure>
+<figure class="figure lit"><img src="../assets/act/p09-16.png" alt="Precision across all activation variants" loading="lazy" /></figure>
+</section>
+
+<section>
+<h2>Conclusion</h2>
+<p>L-Swish outperformed several Swish variants on convergence speed, confirming that the sigmoid bias term does what we expected it to. But it was edged out by P-Swish on final metrics in almost every column — the loss plots suggest overfitting is the likely cause. The honest read is a partial result: the mechanism works, the regularization around it doesn't yet. That's the thread worth pulling next.</p>
+</section>
+
+<div class="proj-next">
+<span class="mono" style="color:var(--mute)">Back to</span>
+<a class="next-link" href="../Portfolio.html#projects">
+<span>All projects</span>
+<svg width="28" height="12" viewBox="0 0 22 10" fill="none"><path d="M1 5h19m0 0L16 1m4 4l-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
+</div>
+</article>
+</div>
+</main>
+
+<footer style="position:relative; z-index:2; border-top: 1px solid var(--rule); padding: 24px 32px; display:flex; justify-content:space-between; align-items:center; color: var(--mute); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; flex-wrap: wrap; gap: 12px; max-width: 1180px; margin: 80px auto 0;">
+<span>© 2025 Muhammad Ilyas Rusdi</span>
+<span>Activation Functions · 04 / 04</span>
+</footer>
+
+<script>
+const io = new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);}}),{threshold:0.12});
+document.querySelectorAll('.proj-body section, .proj-hero, .proj-cover').forEach(el=>{el.classList.add('reveal'); io.observe(el);});
+</script>
+</body>
+</html>

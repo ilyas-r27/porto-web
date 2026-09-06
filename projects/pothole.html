@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pothole Detection — Muhammad Ilyas Rusdi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+<div class="chrome-bg" aria-hidden="true">
+  <div class="blob a"></div>
+  <div class="blob b"></div>
+  <div class="blob c"></div>
+</div>
+
+<nav class="nav scrolled" style="justify-content:flex-start;">
+  <a href="../Portfolio.html#projects" class="back-pill">
+    <svg width="14" height="10" viewBox="0 0 22 10" fill="none"><path d="M21 5H2m0 0l4-4M2 5l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>All projects</span>
+  </a>
+</nav>
+
+<main class="proj-page">
+  <header class="proj-hero">
+    <div class="crumb mono"><span>02 / 04</span><span style="opacity:.4">·</span><span>Computer Vision · Object Detection</span></div>
+    <h1>Pothole<span class="it"> detection</span>.</h1>
+    <p class="lede">A real-time computer vision system built for the ARA 7.0 data science competition — detecting and geo-mapping road surface damage from in-vehicle dash footage.</p>
+    <dl class="proj-meta">
+      <div><dt>Role</dt><dd>Model Lead</dd></div>
+      <div><dt>Event</dt><dd>ARA 7.0 Competition</dd></div>
+      <div><dt>Stack</dt><dd>YOLOv8 · OpenCV · Roboflow</dd></div>
+      <div><dt>Status</dt><dd>Submitted</dd></div>
+    </dl>
+  </header>
+
+  <div class="proj-grid">
+    <aside class="proj-side">
+      <ol>
+        <li>Context</li>
+        <li>Data</li>
+        <li>Model</li>
+        <li>Results</li>
+        <li>What's next</li>
+      </ol>
+    </aside>
+
+    <article class="proj-body">
+      <section>
+        <h2>Context</h2>
+        <p>Indonesian roads are a difficult domain: variable lighting, monsoon rain, motorbike-dense traffic, and potholes that range from hairline cracks to ankle-breakers. Manual surveys are slow and expensive — a passive vision system that runs on commodity hardware would change the economics of road maintenance.</p>
+        <p>The ARA 7.0 brief asked teams to build a model that could not only detect surface damage, but localize and severity-score it in conditions the maintenance team would actually face.</p>
+      </section>
+
+      <section>
+        <h2>Data</h2>
+        <p>I built the training corpus from a mix of competition-provided footage, public datasets, and re-annotated dashcam clips collected around Surabaya. Annotation focused on bounding boxes with a coarse 3-class severity scheme.</p>
+        <ul>
+          <li>~12k labeled frames across day/night/rain conditions.</li>
+          <li>Severity classes: hairline crack · pothole · structural failure.</li>
+          <li>Heavy augmentation: motion blur, rain overlays, brightness jitter.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Model</h2>
+        <p>A YOLOv8-n backbone was chosen for the speed/accuracy trade-off — small enough to deploy on edge devices, accurate enough to be useful. Training emphasized the rare structural-failure class via focal loss + class-balanced sampling.</p>
+      </section>
+
+      <section>
+        <h2>Results</h2>
+        <p>The final model held up on unseen footage from different cities and ran comfortably at 30+ FPS on a mid-range GPU. The severity head was the most fragile component — small visual cues separate "annoying" from "dangerous," and the model occasionally over-classified shadows.</p>
+        <ul>
+          <li>mAP@0.5 of 0.78 on the held-out test set.</li>
+          <li>Real-time inference on consumer hardware.</li>
+          <li>GPS overlay produced a per-route damage heatmap deliverable.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>What's next</h2>
+        <p>Next iteration moves from bounding boxes to segmentation for more accurate area estimation, and adds temporal smoothing across frames so the same pothole isn't counted three times as the car drives past.</p>
+      </section>
+
+      <div class="proj-next">
+        <span class="mono" style="color:var(--mute)">Next project</span>
+        <a class="next-link" href="its-migration.html">
+          <span>ITS Campus Web Migration</span>
+          <svg width="28" height="12" viewBox="0 0 22 10" fill="none"><path d="M1 5h19m0 0L16 1m4 4l-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<footer style="position:relative; z-index:2; border-top: 1px solid var(--rule); padding: 24px 32px; display:flex; justify-content:space-between; align-items:center; color: var(--mute); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; flex-wrap: wrap; gap: 12px; max-width: 1180px; margin: 80px auto 0;">
+  <span>© 2025 Muhammad Ilyas Rusdi</span>
+  <span>Pothole Detection · 02 / 04</span>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);}}),{threshold:0.12});
+  document.querySelectorAll('.proj-body section, .proj-hero, .proj-cover').forEach(el=>{el.classList.add('reveal'); io.observe(el);});
+</script>
+</body>
+</html>

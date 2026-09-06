@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DermaDiff — Muhammad Ilyas Rusdi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+<div class="chrome-bg" aria-hidden="true">
+  <div class="blob a"></div>
+  <div class="blob b"></div>
+  <div class="blob c"></div>
+</div>
+
+<nav class="nav scrolled" style="justify-content:flex-start;">
+  <a href="../Portfolio.html#projects" class="back-pill">
+    <svg width="14" height="10" viewBox="0 0 22 10" fill="none"><path d="M21 5H2m0 0l4-4M2 5l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>All projects</span>
+  </a>
+</nav>
+
+<main class="proj-page">
+  <header class="proj-hero">
+    <div class="crumb mono"><span>01 / 04</span><span style="opacity:.4">·</span><span>Computer Vision · Medical Imaging</span></div>
+    <h1>DermaDiff<span class="it">.</span></h1>
+    <p class="lede">Skin disease classification utilizing the PanDerm Vision Transformer with synthetic data augmentation via Stable Diffusion — closing the long-tail gap on rare dermatological conditions.</p>
+    <dl class="proj-meta">
+      <div><dt>Role</dt><dd>Research & Implementation</dd></div>
+      <div><dt>Year</dt><dd>2025</dd></div>
+      <div><dt>Stack</dt><dd>PyTorch · Diffusers · HuggingFace</dd></div>
+      <div><dt>Status</dt><dd>In progress</dd></div>
+    </dl>
+    <a class="live-link" href="https://dermadiff-web.vercel.app" target="_blank" rel="noopener">
+      <span>Visit the live site</span>
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M4 10L10 4m0 0H5m5 0v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </header>
+
+  <div class="proj-cover lit"><img src="../assets/derma/p04-1.png" alt="DermaDiff training and inference pipeline diagram" /><span>cover — training + inference pipeline</span></div>
+
+  <div class="proj-grid">
+    <aside class="proj-side">
+      <ol>
+        <li>Context</li>
+        <li>Approach</li>
+        <li>Pipeline</li>
+        <li>Results</li>
+        <li>Reflection</li>
+      </ol>
+    </aside>
+
+    <article class="proj-body">
+      <section>
+        <h2>Context</h2>
+        <p>Dermatological datasets are heavily skewed — common conditions dominate while rarer, often more dangerous ones sit in the long tail. Vision Transformers thrive on data; without enough samples per class, even the best architecture under-performs on the cases that matter most.</p>
+        <p>DermaDiff investigates a hybrid approach: instead of collecting more data, can we <em>synthesize</em> it conditionally — and does that synthetic data measurably improve classification on rare classes?</p>
+      </section>
+
+      <section>
+        <h2>Approach</h2>
+        <p>The system pairs two components that usually live in different worlds: a discriminative classifier and a generative diffusion model.</p>
+        <ul>
+          <li><strong>PanDerm Vision Transformer</strong> — a domain-pretrained ViT backbone, fine-tuned for multi-class skin disease recognition.</li>
+          <li><strong>Stable Diffusion (conditioned)</strong> — fine-tuned on dermatology imagery to generate class-conditional synthetic samples for under-represented categories.</li>
+          <li><strong>Curriculum mixing</strong> — synthetic samples are introduced gradually, weighted to never dominate the real distribution.</li>
+        </ul>
+        <figure class="figure lit" style="width:732px;height:377px"><img style="width:728px;height:369px" src="../assets/derma/p04-2.png" alt="Fine-tuned Stable Diffusion 2.1 base with LoRA training pipeline diagram" loading="lazy" /></figure>
+      </section>
+
+      <section>
+        <h2>Pipeline</h2>
+        <p>Data flows through four stages: curation → conditional generation → quality filtering → joint training. A small filter network rejects synthetic images that fall outside the real-data manifold before they ever reach the classifier.</p>
+        <figure class="figure lit tall"><img style="width:640px;height:386px" src="../assets/derma/p07-8.png" alt="System deployment architecture diagram" loading="lazy" /></figure>
+      </section>
+
+      <section>
+        <h2>Results</h2>
+        <p>Early experiments show meaningful gains on rare classes without degrading performance on common ones — a sign that the synthetic samples are adding signal rather than noise. Full benchmarks and ablations are being prepared for write-up.</p>
+        <ul>
+          <li>Macro-F1 improvements concentrated in the bottom-quartile classes.</li>
+          <li>Confusion analysis suggests the model learns sharper decision boundaries in mid-frequency classes too.</li>
+        </ul>
+        <figure class="figure lit" style="width:628px;height:358px"><img style="width:638px;height:342px" src="../assets/derma/p08-9.png" alt="Bar chart of macro and weighted F1 and recall across five experiments" loading="lazy" /></figure>
+        <figure class="figure lit" style="width:627px;height:295px"><img src="../assets/derma/p09-11.png" alt="Per-class F1 score bar chart across five experiments" loading="lazy" /></figure>
+        <figure class="figure lit" style="width:633px;height:281px"><img src="../assets/derma/p09-12.png" alt="FID, LPIPS and MS-SSIM comparison chart across diffusion backbones" loading="lazy" /></figure>
+      </section>
+
+      <section>
+        <h2>Reflection</h2>
+        <p>The interesting open question isn't whether diffusion can augment — it can. It's <em>when</em> synthetic data stops helping and starts hurting. Future work focuses on principled stopping criteria and uncertainty-aware sample weighting.</p>
+      </section>
+
+      <div class="proj-next">
+        <span class="mono" style="color:var(--mute)">Next project</span>
+        <a class="next-link" href="pothole.html">
+          <span>Pothole Detection</span>
+          <svg width="28" height="12" viewBox="0 0 22 10" fill="none"><path d="M1 5h19m0 0L16 1m4 4l-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<footer style="position:relative; z-index:2; border-top: 1px solid var(--rule); padding: 24px 32px; display:flex; justify-content:space-between; align-items:center; color: var(--mute); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; flex-wrap: wrap; gap: 12px; max-width: 1180px; margin: 80px auto 0;">
+  <span>© 2025 Muhammad Ilyas Rusdi</span>
+  <span>DermaDiff · 01 / 04</span>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);}}),{threshold:0.12});
+  document.querySelectorAll('.proj-body section, .proj-hero, .proj-cover').forEach(el=>{el.classList.add('reveal'); io.observe(el);});
+</script>
+</body>
+</html>
