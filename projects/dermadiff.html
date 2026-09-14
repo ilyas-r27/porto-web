@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#030304" />
+<meta name="color-scheme" content="dark" />
 <title>DermaDiff — Muhammad Ilyas Rusdi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -68,13 +70,13 @@
           <li><strong>Stable Diffusion (conditioned)</strong> — fine-tuned on dermatology imagery to generate class-conditional synthetic samples for under-represented categories.</li>
           <li><strong>Curriculum mixing</strong> — synthetic samples are introduced gradually, weighted to never dominate the real distribution.</li>
         </ul>
-        <figure class="figure lit" style="width:732px;height:377px"><img style="width:728px;height:369px" src="../assets/derma/p04-2.png" alt="Fine-tuned Stable Diffusion 2.1 base with LoRA training pipeline diagram" loading="lazy" /></figure>
+        <figure class="figure lit" style="max-width:732px"><img src="../assets/derma/p04-2.png" alt="Fine-tuned Stable Diffusion 2.1 base with LoRA training pipeline diagram" loading="lazy" /></figure>
       </section>
 
       <section>
         <h2>Pipeline</h2>
         <p>Data flows through four stages: curation → conditional generation → quality filtering → joint training. A small filter network rejects synthetic images that fall outside the real-data manifold before they ever reach the classifier.</p>
-        <figure class="figure lit tall"><img style="width:640px;height:386px" src="../assets/derma/p07-8.png" alt="System deployment architecture diagram" loading="lazy" /></figure>
+        <figure class="figure lit tall"><img src="../assets/derma/p07-8.png" alt="System deployment architecture diagram" loading="lazy" /></figure>
       </section>
 
       <section>
@@ -84,9 +86,9 @@
           <li>Macro-F1 improvements concentrated in the bottom-quartile classes.</li>
           <li>Confusion analysis suggests the model learns sharper decision boundaries in mid-frequency classes too.</li>
         </ul>
-        <figure class="figure lit" style="width:628px;height:358px"><img style="width:638px;height:342px" src="../assets/derma/p08-9.png" alt="Bar chart of macro and weighted F1 and recall across five experiments" loading="lazy" /></figure>
-        <figure class="figure lit" style="width:627px;height:295px"><img src="../assets/derma/p09-11.png" alt="Per-class F1 score bar chart across five experiments" loading="lazy" /></figure>
-        <figure class="figure lit" style="width:633px;height:281px"><img src="../assets/derma/p09-12.png" alt="FID, LPIPS and MS-SSIM comparison chart across diffusion backbones" loading="lazy" /></figure>
+        <figure class="figure lit" style="max-width:638px"><img src="../assets/derma/p08-9.png" alt="Bar chart of macro and weighted F1 and recall across five experiments" loading="lazy" /></figure>
+        <figure class="figure lit" style="max-width:627px"><img src="../assets/derma/p09-11.png" alt="Per-class F1 score bar chart across five experiments" loading="lazy" /></figure>
+        <figure class="figure lit" style="max-width:633px"><img src="../assets/derma/p09-12.png" alt="FID, LPIPS and MS-SSIM comparison chart across diffusion backbones" loading="lazy" /></figure>
       </section>
 
       <section>
@@ -105,7 +107,7 @@
   </div>
 </main>
 
-<footer style="position:relative; z-index:2; border-top: 1px solid var(--rule); padding: 24px 32px; display:flex; justify-content:space-between; align-items:center; color: var(--mute); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.08em; text-transform:uppercase; flex-wrap: wrap; gap: 12px; max-width: 1180px; margin: 80px auto 0;">
+<footer class="proj-footer">
   <span>© 2025 Muhammad Ilyas Rusdi</span>
   <span>DermaDiff · 01 / 04</span>
 </footer>
