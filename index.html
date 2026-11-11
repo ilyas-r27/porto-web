@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://unpkg.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <link rel="preload" as="image" href="assets/portrait.jpeg" />
 
@@ -262,7 +262,7 @@ function About() {
   return (
     <section id="about" className="block" ref={ref}>
       <div className="section-head reveal">
-        <h2>About<span style={{ fontStyle: 'italic' }}>.</span></h2>
+        <h2>About<span className="accent">.</span></h2>
         <div className="index mono">02 — Profile</div>
       </div>
 
@@ -275,7 +275,7 @@ function About() {
 
         <div className="about-body">
           <h3 className="reveal d1">
-            I'm an informatics student at <span style={{ fontStyle: 'italic' }}>ITS Surabaya</span>, focused on data science, machine learning, and computer vision.
+            I'm an informatics student at <span className="accent">ITS Surabaya</span>, focused on data science, machine learning, and computer vision.
           </h3>
           <p className="reveal d2">
             Dedicated to advancing computer vision applications through rigorous applied research and data engineering. My work focuses on structuring complex real-world signals for machine reasoning, with a strong emphasis on clean experimental design, reproducibility, and metric optimization.
@@ -379,7 +379,7 @@ function Projects() {
   return (
     <section id="projects" className="block" ref={ref}>
       <div className="section-head reveal">
-        <h2>Selected <span style={{ fontStyle: 'italic' }}>work</span></h2>
+        <h2>Selected <span className="accent">work</span></h2>
         <div className="index mono">03 — Projects · {projects.length}</div>
       </div>
 
@@ -429,6 +429,12 @@ function Contact() {
   const ref = useReveal();
   return (
     <section id="contact" className="contact" ref={ref}>
+      <div className="welcome-bg" aria-hidden="true">
+        <span className="glow navy"></span>
+        <span className="glow cream"></span>
+        <span className="glow coral"></span>
+        <span className="flutes"></span>
+      </div>
       <div className="mono reveal" style={{ color: 'var(--mute)', marginBottom: 24 }}>04 — Contact</div>
       <h2 className="reveal d1">Let's <span className="it">connect</span>.</h2>
       <p className="reveal d2" style={{ color: 'var(--ink-soft)', maxWidth: 520, margin: '0 auto 32px' }}>
