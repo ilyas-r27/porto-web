@@ -1474,3 +1474,31 @@ a:hover{ color: #fff; }
 .nav.home.on-light .clock-chip{ background: var(--navy); color: var(--cream); }
 .nav.home.on-light .nav-icon{ background: rgba(244,237,224,0.72); border-color: rgba(20,33,61,0.14); color: var(--navy); }
 .nav.home.on-light .nav-icon:hover{ background: var(--navy); color: var(--cream); }
+
+/* Portrait set into the metal plate */
+.reflective-card__photo{
+  position: relative;
+  flex: 1 1 auto; min-height: 0;
+  margin: 14px 0 16px;
+  border-radius: var(--rc-tile-radius);
+  overflow: hidden;
+  background: #121118;
+  box-shadow: 0 10px 24px -12px rgba(0,0,0,0.8);
+}
+.reflective-card__photo img{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 22%;
+  pointer-events: none;
+}
+/* bevelled edge + a faint sheen so the photo reads as set under the metal's glass */
+.reflective-card__photo::after{
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10), inset 0 1px 0 rgba(255,255,255,0.18);
+  background: linear-gradient(160deg, rgba(255,255,255,0.10) 0%, transparent 35%, transparent 70%, rgba(13,12,18,0.35) 100%);
+}
+.reflective-card__photo + .reflective-card__identity{ margin-top: 0; }
+.reflective-card__photo ~ .reflective-card__footer{ margin-top: 14px; }
+@media (max-width: 720px){
+  .id-card .reflective-card{ height: 500px; }
+}

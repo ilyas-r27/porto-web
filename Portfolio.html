@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://unpkg.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="preload" as="image" href="assets/portrait.jpeg" />
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
@@ -590,6 +591,8 @@ const ReflectiveCard = React.memo(({
   idLabel = 'ID number',
   idValue = '8901 2345 6789',
   children,
+  photo,
+  photoAlt = '',
   theme = 'dark',
   videoSrc,
   webcam = false,
@@ -1057,6 +1060,11 @@ const ReflectiveCard = React.memo(({
                   )}
                 </div>
               )}
+              {photo && (
+                <div className="reflective-card__photo">
+                  <img src={photo} alt={photoAlt} draggable="false" />
+                </div>
+              )}
               <div className="reflective-card__identity">
                 {name && <h3 className="reflective-card__name">{name}</h3>}
                 {role && <p className="reflective-card__role">{role}</p>}
@@ -1341,6 +1349,8 @@ function About() {
           <ReflectiveCard
             name="Muhammad Ilyas Rusdi"
             role="Informatics · ITS Surabaya"
+            photo="assets/portrait.jpeg"
+            photoAlt="Muhammad Ilyas Rusdi"
             badge="ITS"
             status="Open to collaboration"
             statusColor="#FF6B5B"
@@ -1354,7 +1364,7 @@ function About() {
             shine={1}
             glare={0.5}
             width={340}
-            height={480}
+            height={540}
             style={{ '--rc-ink': '#F4EDE0', '--rc-muted': 'rgba(244, 237, 224, 0.62)' }} />
         </div>
 
